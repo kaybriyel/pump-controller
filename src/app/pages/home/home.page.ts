@@ -11,6 +11,6 @@ export class HomePage {
   constructor(public navCtrl: NavController) {}
 
   goto(url: string) {
-    this.navCtrl.navigateForward(url)
+    this.navCtrl.navigateRoot(url)
   }
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { TankService } from 'src/app/services/tank.service';
 
 @Component({
   selector: 'app-water-tank',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WaterTankPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private tankService: TankService,
+    private navCtrl: NavController
+    ) { }
 
   ngOnInit() {
+    this.tankService.init()
   }
 
+  ngOnDestroy() {
+    this.tankService.close()
+  }
+
+  back() {
+    this.navCtrl.navigateRoot('/')
+  }
 }

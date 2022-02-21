@@ -1,55 +1,55 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Water Tank</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Water Tank</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
 
-  <div flex class="ion-justify-content-center">
-    <div black id="waterTank" tank level="0%">
-      <div water level="0%"></div>
+    <div flex class="ion-justify-content-center">
+        <div black id="waterTank" tank level="0%">
+            <div water level="0%"></div>
+        </div>
     </div>
-  </div>
 
-  <div>
     <div>
-      <ion-text>
-        <h2>Motor status</h2>
-      </ion-text>
-      <ion-list>
-        <ion-item button>
-          <ion-icon slot="start" name="radio-outline"></ion-icon>
-          <ion-text>Connection</ion-text>
-          <ion-text slot="end" color="danger">Connecting</ion-text>
-        </ion-item>
-        <ion-item>
-          <ion-icon slot="start" name="water-outline"></ion-icon>
-          <ion-text>Pumping</ion-text>
-          <ion-text slot="end" color="danger">NO</ion-text>
-        </ion-item>
-        <ion-item>
-          <ion-icon slot="start" name="water-outline"></ion-icon>
-          <ion-text>Auto Pumping</ion-text>
-          <ion-text slot="end" color="danger">OFF</ion-text>
-        </ion-item>
-      </ion-list>
+        <div>
+            <ion-text>
+                <h2>Motor status</h2>
+            </ion-text>
+            <ion-list>
+                <ion-item button>
+                    <ion-icon slot="start" name="radio-outline"></ion-icon>
+                    <ion-text>Connection</ion-text>
+                    <ion-text slot="end" color="danger">Connecting</ion-text>
+                </ion-item>
+                <ion-item>
+                    <ion-icon slot="start" name="water-outline"></ion-icon>
+                    <ion-text>Pumping</ion-text>
+                    <ion-text slot="end" color="danger">NO</ion-text>
+                </ion-item>
+                <ion-item>
+                    <ion-icon slot="start" name="water-outline"></ion-icon>
+                    <ion-text>Auto Pumping</ion-text>
+                    <ion-text slot="end" color="danger">OFF</ion-text>
+                </ion-item>
+            </ion-list>
+        </div>
+        <div>
+            <ion-text>
+                <h2>Status</h2>
+            </ion-text>
+            <ion-list>
+                <ion-item button>
+                    <ion-icon slot="start" name="wifi"></ion-icon>
+                    <ion-text>Connection</ion-text>
+                    <ion-text slot="end" color="{{ tankService.connectionTextColor }}">{{ tankService.connectionText }}</ion-text>
+                </ion-item>
+            </ion-list>
+        </div>
     </div>
-    <div>
-      <ion-text>
-        <h2>Status</h2>
-      </ion-text>
-      <ion-list>
-        <ion-item button>
-          <ion-icon slot="start" name="wifi"></ion-icon>
-          <ion-text>Connection</ion-text>
-          <ion-text slot="end" color="danger">Connecting</ion-text>
-        </ion-item>
-      </ion-list>
-    </div>
-  </div>
 
 </ion-content>

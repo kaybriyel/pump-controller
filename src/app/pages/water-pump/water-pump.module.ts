@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { WaterPumpPageRoutingModule } from './water-pump-routing.module';
 
 import { WaterPumpPage } from './water-pump.page';
+import { PumpService } from 'src/app/services/pump.service';
 
 @NgModule({
   imports: [
@@ -15,6 +16,8 @@ import { WaterPumpPage } from './water-pump.page';
     IonicModule,
     WaterPumpPageRoutingModule
   ],
-  declarations: [WaterPumpPage]
+  declarations: [WaterPumpPage],
+  providers: [
+  ]
 })
 export class WaterPumpPageModule {}
