@@ -1,0 +1,41 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Menu
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card button (click)="goto('/water-pump')">
+    <ion-card-header>
+        <div class="ion-justify-content-center" flex>
+            <img src="assets/imgs/water-pump.png" width="50%" alt="Water Pump">
+        </div>
+        <ion-card-subtitle></ion-card-subtitle>
+        <ion-card-title class="ion-text-center">Water Pump</ion-card-title>
+    </ion-card-header>
+</ion-card>
+
+<ion-card button (click)="goto('/water-tank')">
+    <ion-card-header>
+        <div flex class="ion-justify-content-center">
+            <img src="assets/imgs/water-tank.png" width="50%" alt="Water Tank">
+        </div>
+        <ion-card-subtitle></ion-card-subtitle>
+        <ion-card-title class="ion-text-center">Water Tank</ion-card-title>
+    </ion-card-header>
+</ion-card>
+
+<ion-card button (click)="goto('/remote-control')">
+  <ion-card-header>
+      <div flex class="ion-justify-content-center">
+          <!-- <img src="assets/imgs/water-tank.png" width="50%" alt="Water Tank"> -->
+      </div>
+      <ion-card-subtitle></ion-card-subtitle>
+      <ion-card-title class="ion-text-center">Remote Control</ion-card-title>
+  </ion-card-header>
+</ion-card>
+</ion-content>
+
+

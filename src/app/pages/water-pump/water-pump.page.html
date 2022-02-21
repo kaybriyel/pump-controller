@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Water Pump</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding relate">
+  <div blade-wrapper flex>
+    <ion-img blade id="blade" src="assets/imgs/blade.webp"></ion-img>
+  </div>
+
+  <div>
+    <div style="transform: scale(1);">
+      <ion-text>
+        <h2 id="tankStatus">Water Tank status</h2>
+      </ion-text>
+      <ion-list>
+        <ion-item button id="reconnectBtn">
+          <ion-icon id="connectionIcon" class="connecting" slot="start" name="radio-outline"></ion-icon>
+          <ion-text>Connection</ion-text>
+          <ion-text slot="end" id="connection" color="warning">Connecting</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="water-outline"></ion-icon>
+          <ion-text>Water Level</ion-text>
+          <ion-text slot="end" id="waterLevel" color="danger">0%</ion-text>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div style="transform: scale(1);">
+      <ion-text>
+        <h2 id="tankStatus">Status</h2>
+      </ion-text>
+      <ion-list>
+        <ion-item button id="reconnectBtn">
+          <ion-icon id="connectionIcon" class="connecting" slot="start" name="wifi"></ion-icon>
+          <ion-text>Connection</ion-text>
+          <ion-text slot="end" id="connection" color="warning">Connecting</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="water-outline"></ion-icon>
+          <ion-text>Pumping</ion-text>
+          <ion-text slot="end" id="waterLevel" color="danger">NO</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="water-outline"></ion-icon>
+          <ion-text>Auto Pumping</ion-text>
+          <ion-text slot="end" id="waterLevel" color="danger">OFF</ion-text>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
+</ion-content>

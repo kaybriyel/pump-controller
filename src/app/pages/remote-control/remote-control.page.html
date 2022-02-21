@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Remote Control</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div style="transform: scale(1); margin-bottom: 40px;">
+    <ion-text>
+      <h2 id="tankStatus">Status</h2>
+    </ion-text>
+    <ion-list>
+      <ion-item button id="reconnectBtn">
+        <ion-icon id="connectionIcon" class="connecting" slot="start" name="wifi"></ion-icon>
+        <ion-text>Connection</ion-text>
+        <ion-text slot="end" id="connection" color="warning">Connecting</ion-text>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div>
+    <div blade-wrapper flex>
+      <ion-img blade id="blade" src="assets/imgs/blade.webp"></ion-img>
+    </div>
+
+    <div flex class="ion-justify-content-between ion-align-items-center">
+      <ion-text>
+        <h2>Water Pump</h2>
+      </ion-text>
+      <ion-item style="--border-color: #fff">
+        <ion-toggle id="autoToggler" color="success"></ion-toggle>
+        <ion-label>Auto</ion-label>
+      </ion-item>
+    </div>
+
+    <div>
+      <ion-list>
+        <ion-item button>
+          <ion-icon slot="start" name="radio-outline"></ion-icon>
+          <ion-text>Connection</ion-text>
+          <ion-text slot="end" color="danger">Connecting</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="water-outline"></ion-icon>
+          <ion-text>Pumping</ion-text>
+          <ion-text slot="end" color="danger">NO</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="water-outline"></ion-icon>
+          <ion-text>Auto Pumping</ion-text>
+          <ion-text slot="end" color="danger">OFF</ion-text>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <ion-item>
+      <!-- Default Segment -->
+      <ion-segment mode="ios" id="pumpSwitch" value="off">
+        <ion-segment-button value="on">
+          <ion-label>ON</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="off">
+          <ion-label>OFF</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-item>
+  </div>
+
+  <div style="margin-top: 40px;">
+    <div flex class="ion-justify-content-center">
+      <div black id="waterTank" tank level="0%">
+        <div water level="0%"></div>
+      </div>
+    </div>
+
+    <ion-text>
+      <h2>Water Tank</h2>
+    </ion-text>
+
+    <div style="transform: scale(1);">
+      <ion-list>
+        <ion-item button id="reconnectBtn">
+          <ion-icon id="connectionIcon" class="connecting" slot="start" name="radio-outline"></ion-icon>
+          <ion-text>Connection</ion-text>
+          <ion-text slot="end" id="connection" color="warning">Connecting</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="water-outline"></ion-icon>
+          <ion-text>Water Level</ion-text>
+          <ion-text slot="end" id="waterLevel" color="danger">0%</ion-text>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <ion-item>
+      <ion-range id="waterLevelSlider" mode="ios" min="0" max="100" pin="true" color="secondary">
+      </ion-range>
+      <ion-img water-empty slot="start" src="assets/imgs/empty.png"></ion-img>
+      <ion-img water-full slot="end" src="assets/imgs/full.png"></ion-img>
+    </ion-item>
+  </div>
+</ion-content>

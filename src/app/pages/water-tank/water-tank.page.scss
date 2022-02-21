@@ -1,0 +1,89 @@
+[flex] {
+  display: flex;
+}
+
+/* slider image */
+
+[water-empty] {
+  width: 20px;
+  margin-right: 2px;
+}
+
+[water-full] {
+  width: 20px;
+  margin-left: 2px;
+}
+
+
+/* tank */
+
+[tank] {
+  --width: 96px;
+  position: relative;
+  width: var(--width);
+  height: calc(var(--width) * (177 / 96));
+  border: 1px solid #ABD1E4;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &::after {
+    position: absolute;
+    content: attr(level);
+    top: 47%;
+    width: 100%;
+    text-align: center;
+    color: #ffffff;
+    font-size: 20px;
+    font-family: revert;
+    font-weight: 500;
+  }
+
+  &[black]::after {
+    color: #000;
+  }
+
+  [water] {
+    background: url('/assets/imgs/water.png');
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+    top: 100%;
+  }
+}
+
+
+/* [water] {
+  position: absolute;
+  width: 96px;
+  height: 100%;
+  left: 0px;
+  top: 8.6px;
+} */
+
+
+/* water2 */
+
+
+/* [water2] {
+  position: absolute;
+  width: 96px;
+  height: 100%;
+  left: 0px;
+  top: 23px;
+  background: rgba(139, 191, 210, 0.8);
+} */
+
+
+/* water1 */
+
+
+/* [water1] {
+  position: absolute;
+  width: 96px;
+  height: 100%;
+  left: 0px;
+  top: 8.6px;
+  background: rgba(151, 201, 219, 0.8);
+} */
