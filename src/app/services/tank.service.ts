@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import * as Peer from 'peerjs';
 import { PeerService } from './peer.service';
+import { PumpStatus } from './pump.service';
 
 
-interface TankStatus {
+export interface TankStatus {
   isOnline: boolean
   isConnectedToPump: boolean
   isConnectingToServer: boolean
@@ -18,6 +19,7 @@ export class TankService extends PeerService {
 
   private pumpConn: Peer.DataConnection
   private isPumpConnOpen: boolean
+  private _pumpStatus: PumpStatus
 
   public get status(): TankStatus {
     return {
@@ -29,7 +31,7 @@ export class TankService extends PeerService {
     }
   }
 
-  public pumpStatus: any
+  public get pumpStatus() { return this._pumpStatus }
 
   constructor() {
     super();
@@ -37,7 +39,7 @@ export class TankService extends PeerService {
 
 
   public get isOnline() { return this.isServerOpen && !this.peer.disconnected }
-  public get isConnectedToPump() { return this.pumpConn != null }
+  public get isConnectedToPump() { return this.pumpConn && this.isPumpConnOpen }
   public get isConnectingToServer() { return (!this.isServerOpen && !this.peer.disconnected) }
   // view text
   public get connectionText() { return this.isOnline ? 'Connected' : this.isConnectingToServer ? 'Connecting' : 'Disconnected' }
@@ -89,7 +91,7 @@ export class TankService extends PeerService {
     this.pumpConn?.on('data', data => {
       if (data.payload) {
         console.info('received payload', data.payload)
-        this.pumpStatus = data.payload
+        this._pumpStatus = data.payload
       }
       else if (data.action === 'status') {
         console.info('received action', data.action)

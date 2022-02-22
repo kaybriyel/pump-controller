@@ -1,6 +1,24 @@
 import { Injectable } from '@angular/core'
 import * as Peer from 'peerjs'
 import { PeerService } from './peer.service'
+import { TankStatus } from './tank.service'
+
+export interface PumpStatus {
+  isOnline: boolean
+  isPumping: boolean
+  isConnectedToTank: boolean
+  isEnabledAutoPump: boolean
+  isConnectingToTank: boolean
+  tankConnectionText: string
+  tankConnectionTextColor: string
+  connectionText: string
+  connectionTextColor: string
+  pumpingText: string
+  pumpingTextColor: string
+  autoPumpingText: string
+  autoPumpingTextColor: string
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +28,9 @@ export class PumpService extends PeerService {
   private _autoPump: boolean = false
   private tankConn: Peer.DataConnection
   private isTankConnOpen: boolean
+  private _tankStatus: TankStatus
 
-  public get status() {
+  public get status(): PumpStatus {
     return {
       isOnline: this.isOnline,
       isPumping: this.isPumping,
@@ -29,7 +48,7 @@ export class PumpService extends PeerService {
     }
   }
 
-  public tankStatus: any
+  public get tankStatus() { return this._tankStatus }
 
   public get isOnline() { return this.isServerOpen && !this.peer.disconnected }
   public get isPumping() { return this._isPumping }
@@ -101,7 +120,7 @@ export class PumpService extends PeerService {
     this.tankConn?.on('data', data => {
       if (data.payload) {
         console.info('received payload', data.payload)
-        this.tankStatus = data.payload
+        this._tankStatus = data.payload
       }
       else if (data.action === 'status') {
         console.info('received action', data.action)
