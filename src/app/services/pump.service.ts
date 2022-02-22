@@ -62,8 +62,10 @@ export class PumpService extends PeerService {
     })
     super.peer.on('connection', conn => {
       if (conn.peer === 'unique-tank-id') {
-        this.tankConn = conn
-        this.establishTankConnection()
+        if (!this.isConnectedToTank) {
+          this.tankConn = conn
+          this.establishTankConnection()
+        }
       }
     })
     super.peer.on('error', (e: Error) => {
@@ -74,18 +76,29 @@ export class PumpService extends PeerService {
     window['pumpService'] = this
   }
 
+  public reconnectToTank() {
+    if (!this.isConnectedToTank) {
+      console.log('connecting to tank')
+      this.isTankConnOpen = false
+      this.tankConn = super.peer.connect('unique-tank-id')
+      this.establishTankConnection()
+    }
+  }
+
   private establishTankConnection() {
-    this.isTankConnOpen = true
-    this.tankConn.on('close', () => this.tankConn = null)
-    this.tankConn.on('error', () => this.tankConn = null)
-    this.requestTankStatus()
+    this.tankConn.on('open', () => {
+      this.isTankConnOpen = true
+      this.tankConn?.on('close', () => this.tankConn = null)
+      this.tankConn?.on('close', () => console.info('Tank connection closed'))
+      this.tankConn?.on('error', (e) => console.error('Tank connection error', e))
+      this.tankConn?.on('error', () => this.tankConn = null)
+      this.requestTankStatus()
+    })
   }
 
   private requestTankStatus() {
     console.log('Requesting tank status')
-    this.tankConn.send({ action: 'status' })
-    this.tankConn.on('data', data => {
-      console.log(data)
+    this.tankConn?.on('data', data => {
       if (data.payload) {
         console.info('received payload', data.payload)
         this.tankStatus = data.payload
@@ -93,22 +106,10 @@ export class PumpService extends PeerService {
       else if (data.action === 'status') {
         console.info('received action', data.action)
         console.info('sending', this.status)
-        this.send({ payload: this.status })
+        this.tankConn?.send({ payload: this.status })
       }
     })
-  }
-
-  public reconnectToTank() {
-    if (!this.isConnectedToTank) {
-      console.log('connecting to tank')
-      this.isTankConnOpen = false
-      this.tankConn = super.peer.connect('unique-tank-id')
-      this.tankConn.on('open', () => this.establishTankConnection())
-    }
-  }
-
-  pump() {
-
+    this.tankConn?.send({ action: 'status' })
   }
 
   public close() {
