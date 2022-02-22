@@ -9,10 +9,14 @@
 
 <ion-content class="ion-padding">
 
-    <div flex class="ion-justify-content-center">
-        <div black id="waterTank" tank level="0%">
-            <div water level="0%"></div>
-        </div>
+    <div flex class="ion-justify-content-center ion-justify-content-center ion-align-items-center">
+        <ion-text bold absolute color="light"><h4>{{ tankService.status.waterLevel }}%</h4></ion-text>
+        <svg width="96" height="192" viewBox="0 0 96 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path water class="level-{{ tankService.status.waterLevel }}" d="M0 14.4008C17.0474 19.5115 36.1074 20.0013 96 14.4008V191.401H0V14.4008Z" fill="#8BBFD2"
+                fill-opacity="0.8" />
+            <path d="M0 5.6554C45.0445 1.13516 75.333 -4.41119 96 5.6554V191H0V5.6554Z" fill="#97C9DB"
+                fill-opacity="0.8" />
+        </svg>
     </div>
 
     <div>
@@ -24,17 +28,17 @@
                 <ion-item button>
                     <ion-icon slot="start" name="radio-outline"></ion-icon>
                     <ion-text>Connection</ion-text>
-                    <ion-text slot="end" color="danger">Connecting</ion-text>
+                    <ion-text slot="end" color="{{tankService.pumpConnectionTextColor || 'warning'}}">{{tankService.pumpConnectionText || unknown}}</ion-text>
                 </ion-item>
                 <ion-item>
                     <ion-icon slot="start" name="water-outline"></ion-icon>
                     <ion-text>Pumping</ion-text>
-                    <ion-text slot="end" color="danger">NO</ion-text>
+                    <ion-text slot="end" color="{{tankService.pumpStatus?.pumpingTextColor || 'warning'}}">{{tankService.pumpStatus?.pumpingText || unknown}}</ion-text>
                 </ion-item>
                 <ion-item>
                     <ion-icon slot="start" name="water-outline"></ion-icon>
                     <ion-text>Auto Pumping</ion-text>
-                    <ion-text slot="end" color="danger">OFF</ion-text>
+                    <ion-text slot="end" color="{{tankService.pumpStatus?.autoPumpingTextColor || 'warning'}}">{{tankService.pumpStatus?.autoPumpingText || unknown}}</ion-text>
                 </ion-item>
             </ion-list>
         </div>
@@ -46,7 +50,8 @@
                 <ion-item button>
                     <ion-icon slot="start" name="wifi"></ion-icon>
                     <ion-text>Connection</ion-text>
-                    <ion-text slot="end" color="{{ tankService.connectionTextColor }}">{{ tankService.connectionText }}</ion-text>
+                    <ion-text slot="end" color="{{ tankService.connectionTextColor }}">{{ tankService.connectionText }}
+                    </ion-text>
                 </ion-item>
             </ion-list>
         </div>

@@ -81,10 +81,8 @@ export class PumpService extends PeerService {
     })
     super.peer.on('connection', conn => {
       if (conn.peer === 'unique-tank-id') {
-        if (!this.isConnectedToTank) {
-          this.tankConn = conn
-          this.establishTankConnection()
-        }
+        if (this.tankConn) this.tankConn.close()
+        this.establishTankConnection(conn)
       }
     })
     super.peer.on('error', (e: Error) => {
@@ -97,38 +95,44 @@ export class PumpService extends PeerService {
 
   public reconnectToTank() {
     if (!this.isConnectedToTank) {
-      console.log('connecting to tank')
+      if (this.debug) console.log('connecting to tank')
       this.isTankConnOpen = false
-      this.tankConn = super.peer.connect('unique-tank-id')
-      this.establishTankConnection()
+      const conn = super.peer.connect('unique-tank-id')
+      super.establishConnection(conn)
+      this.establishTankConnection(conn)
     }
   }
 
-  private establishTankConnection() {
-    this.tankConn.on('open', () => {
+  private establishTankConnection(conn) {
+    conn.on('open', () => {
+      this.tankConn = conn
       this.isTankConnOpen = true
-      this.tankConn?.on('close', () => this.tankConn = null)
-      this.tankConn?.on('close', () => console.info('Tank connection closed'))
-      this.tankConn?.on('error', (e) => console.error('Tank connection error', e))
-      this.tankConn?.on('error', () => this.tankConn = null)
+      this.tankConn.on('close', () => setTimeout(() => this.tankConn = null, 1000))
+      this.tankConn.on('close', () => this._tankStatus = null)
+      this.tankConn.on('close', () => this.debug ? console.info('Tank connection closed') : null)
+      this.tankConn.on('error', (e) => this.debug ? console.error('Tank connection error', e) : null)
+      this.tankConn.on('error', () => setTimeout(() => this.tankConn = null, 1000))
+      this.tankConn.on('error', () => this._tankStatus = null)
       this.requestTankStatus()
     })
   }
 
   private requestTankStatus() {
-    console.log('Requesting tank status')
+    if (this.debug) console.log('Requesting tank status')
     this.tankConn?.on('data', data => {
       if (data.payload) {
-        console.info('received payload', data.payload)
+        if (this.debug) console.info('received payload', data.payload)
         this._tankStatus = data.payload
       }
       else if (data.action === 'status') {
-        console.info('received action', data.action)
-        console.info('sending', this.status)
+        if (this.debug) console.info('received action', data.action)
+        if (this.debug) console.info('sending', this.status)
         this.tankConn?.send({ payload: this.status })
       }
     })
-    this.tankConn?.send({ action: 'status' })
+    const i = setInterval(() => this.tankConn?.send({ action: 'status' }), 5000)
+    this.tankConn.on('close', () => clearInterval(i))
+    this.tankConn.on('error', () => clearInterval(i))
   }
 
   public close() {

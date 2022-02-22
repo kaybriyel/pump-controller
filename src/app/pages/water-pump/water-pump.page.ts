@@ -10,6 +10,8 @@ import { PumpService } from 'src/app/services/pump.service';
 export class WaterPumpPage implements OnInit {
   @ViewChild('blade', {static: true, read: ElementRef}) blade: ElementRef;
 
+  unknown = 'Unknown'
+
   constructor(
     private pumpService: PumpService,
     private navCtrl: NavController

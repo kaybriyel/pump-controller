@@ -22,6 +22,7 @@ export class PeerService {
   private conns: Peer.DataConnection[] = []
   private id: string
 
+  protected debug: boolean = false
   protected isServerOpen: boolean
   protected isServerError: boolean
 
@@ -55,13 +56,13 @@ export class PeerService {
     this.myPeer.on('connection', conn => this.establishConnection(conn))
   }
 
-  private establishConnection(conn: Peer.DataConnection) {
+  protected establishConnection(conn: Peer.DataConnection) {
     conn.on('open', () => this.conns.push(conn))
     conn.on('open', () => console.info('Connected to', conn.peer))
     conn.on('data', (data) => console.info('Received', data))
     conn.on('error', (e) => console.error(`Connection between ${conn.peer}`, e))
     conn.on('close', () => console.warn(`Connection between ${conn.peer} is closed`))
-    conn.on('close', () => this.remove(conn))
+    conn.on('close', () => () => setTimeout(() => this.remove(conn), 1000))
   }
 
   private remove(conn: Peer.DataConnection) {

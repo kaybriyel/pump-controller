@@ -22,12 +22,12 @@
                 <ion-item button (click)="pumpService.reconnectToTank()">
                     <ion-icon class="connecting" slot="start" name="radio-outline"></ion-icon>
                     <ion-text>Connection</ion-text>
-                    <ion-text slot="end" id="connection" color="{{ pumpService.tankConnectionTextColor }}">{{ pumpService.tankConnectionText }}</ion-text>
+                    <ion-text slot="end" id="connection" color="{{ pumpService.tankConnectionTextColor || 'warning'}}">{{ pumpService.tankConnectionText || unknown }}</ion-text>
                 </ion-item>
                 <ion-item>
                     <ion-icon slot="start" name="water-outline"></ion-icon>
                     <ion-text>Water Level</ion-text>
-                    <ion-text slot="end" color="{{ pumpService.waterLevelColor }}">{{ pumpService.waterLevelText }}</ion-text>
+                    <ion-text slot="end" color="{{ pumpService.tankStatus?.waterLevelColor || 'warning' }}">{{ pumpService.tankStatus?.waterLevelText || unknown}}</ion-text>
                 </ion-item>
             </ion-list>
         </div>
@@ -40,17 +40,17 @@
                 <ion-item button (click)="pumpService.reconnect()">
                     <ion-icon id="connectionIcon" class="connecting" slot="start" name="wifi"></ion-icon>
                     <ion-text>Connection</ion-text>
-                    <ion-text slot="end" id="connection" color="{{ pumpService.connectionTextColor }}">{{ pumpService.connectionText }}</ion-text>
+                    <ion-text slot="end" id="connection" color="{{ pumpService.connectionTextColor || 'warning' }}">{{ pumpService.connectionText || unknown }}</ion-text>
                 </ion-item>
                 <ion-item>
                     <ion-icon slot="start" name="water-outline"></ion-icon>
                     <ion-text>Pumping</ion-text>
-                    <ion-text slot="end" color="{{ pumpService.pumpingTextColor }}">{{ pumpService.pumpingText }}</ion-text>
+                    <ion-text slot="end" color="{{ pumpService.pumpingTextColor || 'warning' }}">{{ pumpService.pumpingText || unknown }}</ion-text>
                 </ion-item>
                 <ion-item>
                     <ion-icon slot="start" name="water-outline"></ion-icon>
                     <ion-text>Auto Pumping</ion-text>
-                    <ion-text slot="end" color="{{ pumpService.autoPumpingTextColor }}">{{ pumpService.autoPumpingText }}</ion-text>
+                    <ion-text slot="end" color="{{ pumpService.autoPumpingTextColor || 'warning' }}">{{ pumpService.autoPumpingText || unknown }}</ion-text>
                 </ion-item>
             </ion-list>
         </div>

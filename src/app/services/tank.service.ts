@@ -10,6 +10,11 @@ export interface TankStatus {
   isConnectingToServer: boolean
   connectionText: string
   connectionTextColor: string
+  pumpConnectionText: string
+  pumpConnectionTextColor: string
+  waterLevel: number
+  waterLevelText: string
+  waterLevelColor: string
 }
 
 @Injectable({
@@ -20,6 +25,7 @@ export class TankService extends PeerService {
   private pumpConn: Peer.DataConnection
   private isPumpConnOpen: boolean
   private _pumpStatus: PumpStatus
+  private _waterLevel: number = 26
 
   public get status(): TankStatus {
     return {
@@ -27,7 +33,12 @@ export class TankService extends PeerService {
       isConnectedToPump: this.isConnectedToPump,
       isConnectingToServer: this.isConnectingToServer,
       connectionText: this.connectionText,
-      connectionTextColor: this.connectionTextColor
+      connectionTextColor: this.connectionTextColor,
+      pumpConnectionText: this.pumpConnectionText,
+      pumpConnectionTextColor: this.pumpConnectionTextColor,
+      waterLevel: this.waterLevel,
+      waterLevelText: this.waterLevel + '%',
+      waterLevelColor: this.waterLevelColor
     }
   }
 
@@ -41,9 +52,18 @@ export class TankService extends PeerService {
   public get isOnline() { return this.isServerOpen && !this.peer.disconnected }
   public get isConnectedToPump() { return this.pumpConn && this.isPumpConnOpen }
   public get isConnectingToServer() { return (!this.isServerOpen && !this.peer.disconnected) }
+  public get isConnectingToPump() { return this.pumpConn && !this.isPumpConnOpen }
+
   // view text
   public get connectionText() { return this.isOnline ? 'Connected' : this.isConnectingToServer ? 'Connecting' : 'Disconnected' }
   public get connectionTextColor() { return this.isOnline ? 'success' : this.isConnectingToServer ? 'warning' : 'danger' }
+  public get pumpConnectionText() { return this.isConnectingToPump ? 'Connecting' : this.isConnectedToPump ? 'Connected' : 'Disconnected' }
+  public get pumpConnectionTextColor() { return this.isConnectingToPump ? 'warning' : this.isConnectedToPump ? 'success' : 'danger' }
+  public get waterLevel() { return this._waterLevel || 0 }
+  public get waterLevelColor() {
+    const colors = ['danger', 'warning', 'primary', 'success']
+    return colors[Math.floor(this.waterLevel/25)]
+  }
 
   public init() {
     super.init('unique-tank-id')
@@ -51,11 +71,9 @@ export class TankService extends PeerService {
       this.reconnectToPump()
     })
     super.peer.on('connection', conn => {
-      if (conn.peer === 'unique-tank-id') {
-        if (!this.isConnectedToPump) {
-          this.pumpConn = conn
-          this.establishPumpConnection()
-        }
+      if (conn.peer === 'unique-pump-id') {
+        if (this.pumpConn) this.pumpConn.close()
+          this.establishPumpConnection(conn)
       }
     })
     super.peer.on('error', (e: Error) => {
@@ -68,38 +86,44 @@ export class TankService extends PeerService {
 
   public reconnectToPump() {
     if (!this.isConnectedToPump) {
-      console.log('connecting to pump')
+      if(this.debug) console.log('connecting to pump')
       this.isPumpConnOpen = false
-      this.pumpConn = super.peer.connect('unique-pump-id')
-      this.establishPumpConnection()
+      const conn = super.peer.connect('unique-pump-id')
+      super.establishConnection(conn)
+      this.establishPumpConnection(conn)
     }
   }
 
-  private establishPumpConnection() {
-    this.pumpConn.on('open', () => {
+  private establishPumpConnection(conn) {
+    conn.on('open', () => {
+      this.pumpConn = conn
       this.isPumpConnOpen = true
-      this.pumpConn?.on('close', () => this.pumpConn = null)
-      this.pumpConn?.on('close', () => console.info('Pump connection closed'))
-      this.pumpConn?.on('error', (e) => console.error('Pump connection error', e))
-      this.pumpConn?.on('error', () => this.pumpConn = null)
+      this.pumpConn.on('close', () => setTimeout(() => this.pumpConn = null, 1000))
+      this.pumpConn.on('close', () => this._pumpStatus = null)
+      this.pumpConn.on('close', () => this.debug ? console.info('Pump connection closed') : null)
+      this.pumpConn.on('error', (e) => this.debug ? console.error('Pump connection error', e) : null)
+      this.pumpConn.on('error', () => setTimeout(() => this.pumpConn = null, 1000))
+      this.pumpConn.on('error', () => this._pumpStatus = null)
       this.requestPumpStatus()
     })
   }
 
   private requestPumpStatus() {
-    console.log('Requesting pump status')
-    this.pumpConn?.on('data', data => {
+    if(this.debug) console.log('Requesting pump status')
+    this.pumpConn.on('data', data => {
       if (data.payload) {
-        console.info('received payload', data.payload)
+        if(this.debug) console.info('received payload', data.payload)
         this._pumpStatus = data.payload
       }
       else if (data.action === 'status') {
-        console.info('received action', data.action)
-        console.info('sending', this.status)
+        if(this.debug) console.info('received action', data.action)
+        if(this.debug) console.info('sending', this.status)
         this.pumpConn.send({ payload: this.status })
       }
     })
-    this.pumpConn?.send({ action: 'status' })
+    const i = setInterval(() => this.pumpConn?.send({ action: 'status' }), 5000)
+    this.pumpConn.on('close', () => clearInterval(i))
+    this.pumpConn.on('error', () => clearInterval(i))
   }
 
   public close() {

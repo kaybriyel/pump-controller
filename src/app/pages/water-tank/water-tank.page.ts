@@ -9,6 +9,8 @@ import { TankService } from 'src/app/services/tank.service';
 })
 export class WaterTankPage implements OnInit {
 
+  unknown = 'Unknown'
+
   constructor(
     private tankService: TankService,
     private navCtrl: NavController
