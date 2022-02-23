@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import { NavController } from '@ionic/angular';
 import { PumpService } from 'src/app/services/pump.service';
+import { STATUS } from 'src/app/services/remote.service';
 
 @Component({
   selector: 'app-water-pump',
@@ -19,6 +20,11 @@ export class WaterPumpPage implements OnInit {
 
   ngOnInit() {
     this.pumpService.init()
+    console.log('ng init')
+  }
+  
+  ngAfterContentChecked() {
+    this.blade.nativeElement.setAttribute('spinning', this.pumpService.isPumping)
   }
 
   ngOnDestroy() {

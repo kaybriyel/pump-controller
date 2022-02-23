@@ -5,7 +5,7 @@ export const PeerMessage = {
   SERVER_OPEN: 'Connected to peer server',
   SERVER_CLOSE: 'Peer server connection closed',
   SERVER_DISCONNECT: 'Peer server connection disconnected',
-  
+
   PEER_CONNECT: 'Peer connection connected',
   PEER_OPEN: 'Peer connection opened',
   PEER_ERROR: 'Peer connection error',
@@ -36,7 +36,7 @@ export class PeerService {
       else this.myPeer = new Peer
     } catch (error) {
       console.log(id)
-      if(id) this.myPeer = new window['Peer'](id)
+      if (id) this.myPeer = new window['Peer'](id)
       else this.myPeer = new window['Peer']
     }
 
@@ -46,7 +46,7 @@ export class PeerService {
     this.myPeer.on('open', () => this.isServerOpen = true) // connected
     this.myPeer.on('error', (e) => console.error(e.message))
     this.myPeer.on('error', (e: Error) => {
-      if(e.message.endsWith('is taken'))
+      if (e.message.endsWith('is taken'))
         this.isServerError = true
     })
     this.myPeer.on('close', () => console.warn(PeerMessage.SERVER_CLOSE))
@@ -59,10 +59,12 @@ export class PeerService {
   protected establishConnection(conn: Peer.DataConnection) {
     conn.on('open', () => this.conns.push(conn))
     conn.on('open', () => console.info('Connected to', conn.peer))
-    conn.on('data', (data) => console.info('Received', data))
-    conn.on('error', (e) => console.error(`Connection between ${conn.peer}`, e))
-    conn.on('close', () => console.warn(`Connection between ${conn.peer} is closed`))
-    conn.on('close', () => () => setTimeout(() => this.remove(conn), 1000))
+    conn.on('open', () => {
+      conn.on('data', (data) => console.info('Received', data))
+      conn.on('error', (e) => console.error(`Connection between ${conn.peer}`, e))
+      conn.on('close', () => console.warn(`Connection between ${conn.peer} is closed`))
+      conn.on('close', () => () => setTimeout(() => this.remove(conn), 1000))
+    })
   }
 
   private remove(conn: Peer.DataConnection) {
@@ -74,9 +76,9 @@ export class PeerService {
   }
 
   public get peer() { return this.myPeer }
-  
+
   public reconnect() {
-    if(this.myPeer.disconnected) {
+    if (this.myPeer.disconnected) {
       this.initialize(this.id)
     }
   }

@@ -24,3 +24,60 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+
+$i: 0;
+@while $i <= 100 {
+  [water].level-#{$i} {
+      --level: #{(100 - $i)*1%};
+  }
+  $i: $i + 1;
+}
+
+[water] {
+  transform: translateY(var(--level));
+}
+
+/* slider image */
+[water-empty] {
+  width: 20px;
+  margin-right: 2px;
+}
+
+[water-full] {
+  width: 20px;
+  margin-left: 2px;
+}
+
+[flex] {
+  display: flex;
+}
+
+[absolute] {
+  position: absolute;
+}
+
+[bold] {
+  font-weight: bold;
+}
+
+@keyframes spin {
+  from {
+      transform: rotate(0deg);
+  }
+  to {
+      transform: rotate(1000deg);
+  }
+}
+
+[blade-wrapper] {
+  [blade] {
+    width: 70%;
+    
+    &[spinning=true] {
+      animation: spin 1s linear 0s infinite;
+    }
+  }
+
+  justify-content: center;
+}

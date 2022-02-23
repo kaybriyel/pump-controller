@@ -13,67 +13,86 @@
             <h2 id="tankStatus">Status</h2>
         </ion-text>
         <ion-list>
-            <ion-item button id="reconnectBtn">
-                <ion-icon id="connectionIcon" class="connecting" slot="start" name="wifi"></ion-icon>
+            <ion-item button (click)="remoteService.reconnect()">
+                <ion-icon slot="start" name="wifi"></ion-icon>
                 <ion-text>Connection</ion-text>
-                <ion-text slot="end" id="connection" color="warning">Connecting</ion-text>
+                <ion-text slot="end" id="connection" color="{{remoteService.connectionTextColor}}">
+                    {{remoteService.connectionText}}</ion-text>
             </ion-item>
         </ion-list>
     </div>
 
     <div>
         <div blade-wrapper flex>
-            <ion-img blade id="blade" src="assets/imgs/blade.webp"></ion-img>
+            <ion-img blade #blade
+                src="assets/imgs/blade.webp"></ion-img>
         </div>
 
-        <div flex class="ion-justify-content-between ion-align-items-center">
+        <div style="transform: scale(1);" flex class="ion-justify-content-between ion-align-items-center">
             <ion-text>
                 <h2>Water Pump</h2>
             </ion-text>
             <ion-item style="--border-color: #fff">
-                <ion-toggle id="autoToggler" color="success"></ion-toggle>
+                <ion-toggle #autoSwitch (touchstart)="autoPumpSwitch = true "
+                    color="{{remoteService.pumpStatus?.autoPumpingTextColor || 'warning'}}" (ionChange)="toggleAutoPump($event)"></ion-toggle>
                 <ion-label>Auto</ion-label>
             </ion-item>
         </div>
 
         <div>
             <ion-list>
-                <ion-item button>
+                <ion-item button (click)="remoteService.reconnectToPump()">
                     <ion-icon slot="start" name="radio-outline"></ion-icon>
                     <ion-text>Connection</ion-text>
-                    <ion-text slot="end" color="danger">Connecting</ion-text>
+                    <ion-text slot="end" color="{{remoteService.pumpConnectionTextColor}}">
+                        {{remoteService.pumpConnectionText}}</ion-text>
+                </ion-item>
+                <ion-item button (click)="remoteService.reconnectPumpToTank()">
+                    <ion-icon slot="start" name="radio-outline"></ion-icon>
+                    <ion-text>Tank connection</ion-text>
+                    <ion-text slot="end" color="{{remoteService.pumpStatus?.tankConnectionTextColor || 'warning' }}">
+                        {{remoteService.pumpStatus?.tankConnectionText || unknown}}</ion-text>
                 </ion-item>
                 <ion-item>
                     <ion-icon slot="start" name="water-outline"></ion-icon>
                     <ion-text>Pumping</ion-text>
-                    <ion-text slot="end" color="danger">NO</ion-text>
+                    <ion-text slot="end" color="{{remoteService.pumpStatus?.pumpingTextColor || 'warning'}}">
+                        {{remoteService.pumpStatus?.pumpingText || unknown}}</ion-text>
                 </ion-item>
                 <ion-item>
                     <ion-icon slot="start" name="water-outline"></ion-icon>
                     <ion-text>Auto Pumping</ion-text>
-                    <ion-text slot="end" color="danger">OFF</ion-text>
+                    <ion-text slot="end" color="{{remoteService.pumpStatus?.autoPumpingTextColor || 'warning'}}">
+                        {{remoteService.pumpStatus?.autoPumpingText || unknown}}</ion-text>
                 </ion-item>
             </ion-list>
         </div>
 
         <ion-item>
             <!-- Default Segment -->
-            <ion-segment mode="ios" id="pumpSwitch" value="off">
-                <ion-segment-button value="on">
-                    <ion-label>ON</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value="off">
+            <ion-segment mode="ios" value="{{remoteService.pumpStatus?.isPumping || false }}" (touchstart)="pumpSwitch = true" (ionChange)="togglePump($event)">
+                <ion-segment-button value="false">
                     <ion-label>OFF</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="true">
+                    <ion-label>ON</ion-label>
                 </ion-segment-button>
             </ion-segment>
         </ion-item>
     </div>
 
     <div style="margin-top: 40px;">
-        <div flex class="ion-justify-content-center">
-            <div black id="waterTank" tank level="0%">
-                <div water level="0%"></div>
-            </div>
+        <div flex class="ion-justify-content-center ion-justify-content-center ion-align-items-center">
+            <ion-text bold absolute color="light">
+                <h4>{{ remoteService.tankStatus?.waterLevel }}%</h4>
+            </ion-text>
+            <svg width="96" height="192" viewBox="0 0 96 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path water class="level-{{ remoteService.tankStatus?.waterLevel || 0 }}"
+                    d="M0 14.4008C17.0474 19.5115 36.1074 20.0013 96 14.4008V191.401H0V14.4008Z" fill="#8BBFD2"
+                    fill-opacity="0.8" />
+                <path d="M0 5.6554C45.0445 1.13516 75.333 -4.41119 96 5.6554V191H0V5.6554Z" fill="#97C9DB"
+                    fill-opacity="0.8" />
+            </svg>
         </div>
 
         <ion-text>
@@ -82,21 +101,28 @@
 
         <div style="transform: scale(1);">
             <ion-list>
-                <ion-item button id="reconnectBtn">
-                    <ion-icon id="connectionIcon" class="connecting" slot="start" name="radio-outline"></ion-icon>
+                <ion-item button (click)="remoteService.reconnectToTank()">
+                    <ion-icon slot="start" name="radio-outline"></ion-icon>
                     <ion-text>Connection</ion-text>
-                    <ion-text slot="end" id="connection" color="warning">Connecting</ion-text>
+                    <ion-text slot="end" color="{{remoteService.tankConnectionTextColor}}">
+                        {{remoteService.tankConnectionText}}</ion-text>
+                </ion-item>
+                <ion-item button (click)="remoteService.reconnectTankToPump()">
+                    <ion-icon slot="start" name="radio-outline"></ion-icon>
+                    <ion-text>Pump connection</ion-text>
+                    <ion-text slot="end" color="{{remoteService.tankStatus?.pumpConnectionTextColor || 'warning'}}">
+                        {{remoteService.tankStatus?.pumpConnectionText || unknown}}</ion-text>
                 </ion-item>
                 <ion-item>
                     <ion-icon slot="start" name="water-outline"></ion-icon>
                     <ion-text>Water Level</ion-text>
-                    <ion-text slot="end" id="waterLevel" color="danger">0%</ion-text>
+                    <ion-text slot="end" id="waterLevel" color="{{ remoteService.tankStatus?.waterLevelColor || 'warning' }}">{{ remoteService.tankStatus?.waterLevelText || unknown }}</ion-text>
                 </ion-item>
             </ion-list>
         </div>
 
         <ion-item>
-            <ion-range id="waterLevelSlider" mode="ios" min="0" max="100" pin="true" color="secondary">
+            <ion-range value="{{remoteService.tankStatus?.waterLevel}}" mode="ios" min="0" max="100" pin="true" color="secondary">
             </ion-range>
             <ion-img water-empty slot="start" src="assets/imgs/empty.png"></ion-img>
             <ion-img water-full slot="end" src="assets/imgs/full.png"></ion-img>

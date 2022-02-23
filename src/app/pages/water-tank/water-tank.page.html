@@ -25,7 +25,7 @@
                 <h2>Motor status</h2>
             </ion-text>
             <ion-list>
-                <ion-item button>
+                <ion-item (click)="tankService.reconnectToPump()">
                     <ion-icon slot="start" name="radio-outline"></ion-icon>
                     <ion-text>Connection</ion-text>
                     <ion-text slot="end" color="{{tankService.pumpConnectionTextColor || 'warning'}}">{{tankService.pumpConnectionText || unknown}}</ion-text>
