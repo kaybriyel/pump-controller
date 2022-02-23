@@ -29,6 +29,7 @@
                     <ion-icon slot="start" name="radio-outline"></ion-icon>
                     <ion-text>Connection</ion-text>
                     <ion-text slot="end" color="{{tankService.pumpConnectionTextColor || 'warning'}}">{{tankService.pumpConnectionText || unknown}}</ion-text>
+                    <ion-progress-bar #connectingToPump type="determinate" value="0.42" buffer="0.5" reversed="true" color="primary"></ion-progress-bar>
                 </ion-item>
                 <ion-item>
                     <ion-icon slot="start" name="water-outline"></ion-icon>
@@ -52,6 +53,7 @@
                     <ion-text>Connection</ion-text>
                     <ion-text slot="end" color="{{ tankService.connectionTextColor }}">{{ tankService.connectionText }}
                     </ion-text>
+                    <ion-progress-bar #connectingToServer type="determinate" value="0.42" buffer="0.5" reversed="true" color="primary"></ion-progress-bar>
                 </ion-item>
             </ion-list>
         </div>

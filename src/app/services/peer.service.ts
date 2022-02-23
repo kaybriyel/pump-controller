@@ -77,9 +77,9 @@ export class PeerService {
 
   public get peer() { return this.myPeer }
 
-  public reconnect() {
+  public reconnect(id?:string) {
     if (this.myPeer.disconnected) {
-      this.initialize(this.id)
+      this.initialize(id || this.id)
     }
   }
 

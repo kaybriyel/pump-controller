@@ -10,6 +10,8 @@ import { STATUS } from 'src/app/services/remote.service';
 })
 export class WaterPumpPage implements OnInit {
   @ViewChild('blade', {static: true, read: ElementRef}) blade: ElementRef;
+  @ViewChild('connectingToTank', {static: true, read: ElementRef}) connectingToTank: ElementRef;
+  @ViewChild('connectingToServer', {static: true, read: ElementRef}) connectingToServer: ElementRef;
 
   unknown = 'Unknown'
 
@@ -25,6 +27,12 @@ export class WaterPumpPage implements OnInit {
   
   ngAfterContentChecked() {
     this.blade.nativeElement.setAttribute('spinning', this.pumpService.isPumping)
+    if(!this.pumpService.isConnectingToTank) this.connectingToTank.nativeElement.setAttribute('hidden', true)
+    else this.connectingToTank.nativeElement.removeAttribute('hidden')
+
+    if(!this.pumpService.isConnectingToServer) this.connectingToServer.nativeElement.setAttribute('hidden', true)
+    else this.connectingToServer.nativeElement.removeAttribute('hidden')
+    
   }
 
   ngOnDestroy() {

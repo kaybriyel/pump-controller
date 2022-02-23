@@ -23,16 +23,17 @@
                     <ion-text>Connection</ion-text>
                     <ion-text slot="end" id="connection" color="{{ pumpService.tankConnectionTextColor || 'warning'}}">
                         {{ pumpService.tankConnectionText || unknown }}</ion-text>
-                </ion-item>
-                <ion-item>
-                    <ion-icon slot="start" name="water-outline"></ion-icon>
-                    <ion-text>Water Level</ion-text>
-                    <ion-text slot="end" color="{{ pumpService.tankStatus?.waterLevelColor || 'warning' }}">{{
+                        <ion-progress-bar #connectingToTank type="determinate" value="0.42" buffer="0.5" reversed="true" color="primary"></ion-progress-bar>
+                    </ion-item>
+                    <ion-item>
+                        <ion-icon slot="start" name="water-outline"></ion-icon>
+                        <ion-text>Water Level</ion-text>
+                        <ion-text slot="end" color="{{ pumpService.tankStatus?.waterLevelColor || 'warning' }}">{{
                         pumpService.tankStatus?.waterLevelText || unknown}}</ion-text>
                 </ion-item>
             </ion-list>
         </div>
-
+        
         <div style="transform: scale(1);">
             <ion-text>
                 <h2 id="tankStatus">Status</h2>
@@ -43,6 +44,7 @@
                     <ion-text>Connection</ion-text>
                     <ion-text slot="end" id="connection" color="{{ pumpService.connectionTextColor || 'warning' }}">{{
                         pumpService.connectionText || unknown }}</ion-text>
+                        <ion-progress-bar #connectingToServer type="determinate" value="0.42" buffer="0.5" reversed="true" color="primary"></ion-progress-bar>
                 </ion-item>
                 <ion-item>
                     <ion-icon slot="start" name="water-outline"></ion-icon>

@@ -16,8 +16,14 @@
             <ion-item button (click)="remoteService.reconnect()">
                 <ion-icon slot="start" name="wifi"></ion-icon>
                 <ion-text>Connection</ion-text>
-                <ion-text slot="end" id="connection" color="{{remoteService.connectionTextColor}}">
+                <ion-text slot="end" color="{{remoteService.connectionTextColor}}">
                     {{remoteService.connectionText}}</ion-text>
+            </ion-item>
+            <ion-item button (click)="changeId()">
+                <ion-icon slot="start" name="user"></ion-icon>
+                <ion-text>Your ID</ion-text>
+                <ion-text slot="end"  color="{{id ? 'success' : 'danger'}}">
+                    {{id || unknown}}</ion-text>
             </ion-item>
         </ion-list>
     </div>
@@ -33,7 +39,7 @@
                 <h2>Water Pump</h2>
             </ion-text>
             <ion-item style="--border-color: #fff">
-                <ion-toggle #autoSwitch (touchstart)="autoPumpSwitch = true "
+                <ion-toggle #autoSwitch (touchstart)="autoPumpSwitchTouch = true "
                     color="{{remoteService.pumpStatus?.autoPumpingTextColor || 'warning'}}" (ionChange)="toggleAutoPump($event)"></ion-toggle>
                 <ion-label>Auto</ion-label>
             </ion-item>
@@ -70,7 +76,7 @@
 
         <ion-item>
             <!-- Default Segment -->
-            <ion-segment mode="ios" value="{{remoteService.pumpStatus?.isPumping || false }}" (touchstart)="pumpSwitch = true" (ionChange)="togglePump($event)">
+            <ion-segment #pumpSwitch mode="ios" value="{{remoteService.pumpStatus?.isPumping || false }}" (touchstart)="pumpSwitchTouch = true" (ionChange)="togglePump($event)">
                 <ion-segment-button value="false">
                     <ion-label>OFF</ion-label>
                 </ion-segment-button>
