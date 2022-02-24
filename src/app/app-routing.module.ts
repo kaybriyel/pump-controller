@@ -24,17 +24,9 @@ const routes: Routes = [
     loadChildren: () => import('./pages/remote-control/remote-control.module').then( m => m.RemoteControlPageModule)
   },
   {
-    path: 'remote-control',
-    loadChildren: () => import('./pages/remote-control/remote-control.module').then( m => m.RemoteControlPageModule)
-  },
-  {
-    path: 'water-tank',
-    loadChildren: () => import('./pages/water-tank/water-tank.module').then( m => m.WaterTankPageModule)
-  },
-  {
-    path: 'water-pump',
-    loadChildren: () => import('./pages/water-pump/water-pump.module').then( m => m.WaterPumpPageModule)
-  },
+    path: 'setting',
+    loadChildren: () => import('./pages/setting/setting.module').then( m => m.SettingPageModule)
+  }
 ];
 
 @NgModule({

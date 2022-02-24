@@ -32,7 +32,7 @@ export class PeerService {
   private initialize(id?: string) {
     this.id = id
     this.isServerOpen = false
-    const isRemoteServer = localStorage.getItem(REMOTE_SERVER)
+    const isRemoteServer = localStorage.getItem(REMOTE_SERVER) === 'true' ? true : false
     try {
       if (id && isRemoteServer) this.myPeer = new Peer(id)
       else if(id) this.myPeer = new Peer(id, { host: '/', port: 80, 'path': '/peerjs' })

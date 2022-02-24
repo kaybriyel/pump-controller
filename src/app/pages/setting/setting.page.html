@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Setting</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating">Server IP </ion-label>
+      <ion-input class="ion-no-padding" #ip0 type="number" slot="end" enterkeyhint="next" [(ngModel)]="ip[0]" (ionInput)="onInput()" placeholder="0"></ion-input>
+      <ion-label slot="end">.</ion-label>
+      <ion-input class="ion-no-padding" #ip1 type="number" slot="end" enterkeyhint="next" [(ngModel)]="ip[1]" (ionInput)="onInput()" placeholder="0"></ion-input>
+      <ion-label slot="end">.</ion-label>
+      <ion-input class="ion-no-padding" #ip2 type="number" slot="end" enterkeyhint="next" [(ngModel)]="ip[2]" (ionInput)="onInput()" placeholder="0"></ion-input>
+      <ion-label slot="end">.</ion-label>
+      <ion-input class="ion-no-padding" #ip3 type="number" slot="end" enterkeyhint="next" [(ngModel)]="ip[3]" (ionInput)="onInput()" placeholder="0"></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>

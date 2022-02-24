@@ -3,7 +3,8 @@
     <ion-title>
       Menu
     </ion-title>
-    <ion-toggle #remoteServerToggler slot="end" color="success" (ionChange)="toggleServer($event)">Remote Server</ion-toggle>
+    <ion-toggle #remoteServerToggler slot="end" color="success" (ionChange)="toggleServer($event)"></ion-toggle>
+    <ion-label slot="end">Remote Server</ion-label>
   </ion-toolbar>
 </ion-header>
 
@@ -37,6 +38,11 @@
       <ion-card-title class="ion-text-center">Remote Control</ion-card-title>
   </ion-card-header>
 </ion-card>
+<ion-fab vertical="bottom" color="success" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="goto('/setting')">
+    <ion-icon name="settings-sharp"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 </ion-content>
 
 

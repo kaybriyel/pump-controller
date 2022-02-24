@@ -24,7 +24,7 @@ export class HomePage {
     this.remoteServerToggler.nativeElement.checked = this.remoteServer
   }
 
-  toggleServer({ detail: checked }) {
+  toggleServer({ detail: { checked } }) {
     this.remoteServer = checked
     localStorage.setItem(REMOTE_SERVER, checked)
   }
