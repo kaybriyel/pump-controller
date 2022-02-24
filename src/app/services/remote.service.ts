@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Peer from 'peerjs';
 import { PeerService } from './peer.service';
-import { PumpService, PumpStatus } from './pump.service';
+import { PumpStatus } from './pump.service';
 import { TankStatus } from './tank.service';
 
 export const PUMP_OFF = 'PUMP_OFF'
@@ -14,6 +14,7 @@ export const STATUS = 'STATUS'
 export const INC_LEVEL = 'INC_LEVEL'
 export const DEC_LEVEL = 'DEC_LEVEL'
 export const FULL = 'FULL'
+export const REMOTE_SERVER = 'REMOTE_SERVER'
 
 @Injectable({
   providedIn: 'root'

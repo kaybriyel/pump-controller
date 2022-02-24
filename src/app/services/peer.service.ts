@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as Peer from 'peerjs';
+import { REMOTE_SERVER } from './remote.service';
 
 export const PeerMessage = {
   SERVER_OPEN: 'Connected to peer server',
@@ -31,15 +32,14 @@ export class PeerService {
   private initialize(id?: string) {
     this.id = id
     this.isServerOpen = false
+    const isRemoteServer = localStorage.getItem(REMOTE_SERVER)
     try {
-      if (id) this.myPeer = new Peer(id)
-      else this.myPeer = new Peer
+      if (id && isRemoteServer) this.myPeer = new Peer(id)
+      else if(id) this.myPeer = new Peer(id, { host: '/', port: 80, 'path': '/peerjs' })
     } catch (error) {
-      console.log(id)
-      if (id) this.myPeer = new window['Peer'](id)
-      else this.myPeer = new window['Peer']
+      if (id && isRemoteServer) this.myPeer = new window['Peer'](id)
+      else if(id) this.myPeer = new window['Peer'](id, { host: '/', port: 80, 'path': '/peerjs' })
     }
-
 
     // server events
     this.myPeer.on('open', id => console.info(PeerMessage.SERVER_OPEN, id)) // connected
@@ -77,7 +77,7 @@ export class PeerService {
 
   public get peer() { return this.myPeer }
 
-  public reconnect(id?:string) {
+  public reconnect(id?: string) {
     if (this.myPeer.disconnected) {
       this.initialize(id || this.id)
     }
@@ -93,5 +93,6 @@ export class PeerService {
   public close() {
     this.conns.forEach(c => c.close())
     this.myPeer?.disconnect()
+    this.myPeer?.destroy()
   }
 }
