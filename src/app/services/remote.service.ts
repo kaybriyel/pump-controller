@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as Peer from 'peerjs';
 import { PeerService } from './peer.service';
 import { PumpService, PumpStatus } from './pump.service';
+import { TankStatus } from './tank.service';
 
 export const PUMP_OFF = 'PUMP_OFF'
 export const PUMP_ON = 'PUMP_ON'
@@ -23,7 +24,7 @@ export class RemoteService extends PeerService {
   private tankConn: Peer.DataConnection
 
   private _pumpStatus: PumpStatus
-  private _tankStatus: PumpService
+  private _tankStatus: TankStatus
 
   private isPumpConnOpen: boolean
   private isTankConnOpen: boolean
@@ -31,8 +32,8 @@ export class RemoteService extends PeerService {
   private _isConnectingToPump: boolean
   private _isConnectingToTank: boolean
 
-  public get isOnline() { return this.isServerOpen && !this.peer.disconnected }
-  public get isConnectingToServer() { return (!this.isServerOpen && !this.peer.disconnected) }
+  public get isOnline() { return this.peer && this.isServerOpen && !this.peer.disconnected }
+  public get isConnectingToServer() { return ( this.peer && !this.isServerOpen && !this.peer.disconnected) }
 
   public get isConnectingToPump() { return this._isConnectingToPump }
   public get isConnectingToTank() { return this._isConnectingToTank }
@@ -183,5 +184,9 @@ export class RemoteService extends PeerService {
 
   public sendPumpSignal(signal: string) {
     this.pumpConn?.send({ action: signal })
+  }
+
+  sendTankSignal(signal: string, payload?: any) {
+    this.tankConn?.send({ action: signal, payload })
   }
 }

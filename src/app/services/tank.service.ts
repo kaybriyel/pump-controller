@@ -119,6 +119,11 @@ export class TankService extends PeerService {
         if (this.debug) console.info('received action', data.action)
         if (this.debug) console.info('sending', this.status)
         conn?.send({ payload: this.status })
+      } else if (data.action === DEC_LEVEL) {
+        const diff = data.payload || 0
+        this._waterLevel -= diff
+        conn?.send({ payload: this.status })
+        this.pumpConn?.send({ payload: this.status })
       }
     }))
   }
@@ -131,8 +136,8 @@ export class TankService extends PeerService {
       if (data.payload) {
         if (this.debug) console.info('received payload', data.payload)
         this._pumpStatus = data.payload
-        if(this.pumpStatus.isPumping) {
-          if(this._waterLevel + 3 <= 100) this._waterLevel += 3
+        if (this.pumpStatus.isPumping) {
+          if (this._waterLevel + 3 <= 100) this._waterLevel += 3
           else {
             this._waterLevel = 100
             this.send({ action: FULL })
@@ -153,8 +158,8 @@ export class TankService extends PeerService {
       }
 
       function send(payload) {
-        if(debug) console.info('received action', data.action)
-        if(debug) console.info('sending', payload)
+        if (debug) console.info('received action', data.action)
+        if (debug) console.info('sending', payload)
         conn.send({ payload })
       }
     })

@@ -22,7 +22,6 @@ export class WaterPumpPage implements OnInit {
 
   ngOnInit() {
     this.pumpService.init()
-    console.log('ng init')
   }
   
   ngAfterContentChecked() {

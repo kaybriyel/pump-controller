@@ -92,6 +92,6 @@ export class PeerService {
 
   public close() {
     this.conns.forEach(c => c.close())
-    this.myPeer.disconnect()
+    this.myPeer?.disconnect()
   }
 }

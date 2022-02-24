@@ -128,7 +128,7 @@
         </div>
 
         <ion-item>
-            <ion-range value="{{remoteService.tankStatus?.waterLevel}}" mode="ios" min="0" max="100" pin="true" color="secondary">
+            <ion-range #range value="{{remoteService.tankStatus?.waterLevel}}" mode="ios" min="0" max="100" pin="true" color="secondary" (touchmove)="rangeTouch=true" (touchstart)="rangeTouch=true" (ionChange)="useWater($event)">
             </ion-range>
             <ion-img water-empty slot="start" src="assets/imgs/empty.png"></ion-img>
             <ion-img water-full slot="end" src="assets/imgs/full.png"></ion-img>

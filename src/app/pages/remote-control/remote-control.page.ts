@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
-import { AUTO_PUMP_OFF, AUTO_PUMP_ON, PUMP_OFF, PUMP_ON, RemoteService } from 'src/app/services/remote.service';
+import { AUTO_PUMP_OFF, AUTO_PUMP_ON, DEC_LEVEL, INC_LEVEL, PUMP_OFF, PUMP_ON, RemoteService } from 'src/app/services/remote.service';
 
 @Component({
   selector: 'app-remote-control',
@@ -11,11 +11,13 @@ export class RemoteControlPage implements OnInit {
   @ViewChild('autoSwitch', { static: true, read: ElementRef }) autoSwitch: ElementRef;
   @ViewChild('pumpSwitch', { static: true, read: ElementRef }) pumpSwitch: ElementRef;
   @ViewChild('blade', { static: true, read: ElementRef }) blade: ElementRef;
+  @ViewChild('range', { static: true, read: ElementRef }) range: ElementRef;
 
 
   unknown: string = 'Unknown'
   pumpSwitchTouch: boolean
   autoPumpSwitchTouch: boolean
+  rangeTouch: boolean
   private id: string
 
   constructor(
@@ -32,20 +34,21 @@ export class RemoteControlPage implements OnInit {
     }
     if (!this.id || this.id === 'null' || this.id === 'undefined' || this.id === '0') {
       this.presentToast('This ID cannot be used')
+      setTimeout(() => this.back(), 2000)
     }
     else this.remoteService.init('unique-remote-id-for-' + this.id)
   }
 
   ngOnDestroy() {
-    this.remoteService.close()
+    this.remoteService?.close()
   }
 
   changeId() {
     const id = prompt('Your ID', this.id)
-    if(id !== this.id) {
+    if (id !== this.id) {
       localStorage.setItem('id', id)
       this.id = id
-      this.remoteService.reconnect(id)    
+      this.remoteService.reconnect(id)
     }
   }
 
@@ -81,5 +84,27 @@ export class RemoteControlPage implements OnInit {
       duration: 1000
     });
     toast.present();
+  }
+
+  useWater({ detail: value }) {
+    window['range'] =this.range
+    if (this.rangeTouch) {
+      this.rangeTouch = !this.rangeTouch
+      if(!this.remoteService.tankStatus || !this.remoteService.isConnectedToTank) {
+        this.presentToast('No connection...')
+        this.range.nativeElement.value = this.remoteService.tankStatus?.waterLevel || 0
+        return
+      }
+
+      if (value > this.remoteService.tankStatus?.waterLevel)
+        this.range.nativeElement.value = this.remoteService.tankStatus.waterLevel
+      else {
+        const diff = this.remoteService.tankStatus.waterLevel - value
+        if(diff > 10)
+        this.range.nativeElement.value -= 10
+        else this.range.nativeElement.value -= diff
+        this.remoteService.sendTankSignal(DEC_LEVEL, diff)
+      }
+    }
   }
 }
