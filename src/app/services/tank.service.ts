@@ -1,22 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as Peer from 'peerjs';
+import { PumpStatus, TankStatus } from '../variables/interfaces';
+import { STATUS, DEC_LEVEL, FULL, INC_LEVEL } from '../variables/string';
 import { PeerService } from './peer.service';
-import { PumpStatus } from './pump.service';
-import { DEC_LEVEL, FULL, INC_LEVEL, STATUS } from './remote.service';
 
-
-export interface TankStatus {
-  isOnline: boolean
-  isConnectedToPump: boolean
-  isConnectingToServer: boolean
-  connectionText: string
-  connectionTextColor: string
-  pumpConnectionText: string
-  pumpConnectionTextColor: string
-  waterLevel: number
-  waterLevelText: string
-  waterLevelColor: string
-}
 
 @Injectable({
   providedIn: 'root'
@@ -51,9 +38,9 @@ export class TankService extends PeerService {
   }
 
 
-  public get isOnline() { return this.isServerOpen && !this.peer.disconnected }
+  public get isOnline() { return this.isServerOpen && !this.peer?.disconnected }
   public get isConnectedToPump() { return this.isPumpConnOpen }
-  public get isConnectingToServer() { return (!this.isServerOpen && !this.peer.disconnected) }
+  public get isConnectingToServer() { return (!this.isServerOpen && !this.peer?.disconnected) }
   public get isConnectingToPump() { return this._isConnectingToPump }
 
   // view text

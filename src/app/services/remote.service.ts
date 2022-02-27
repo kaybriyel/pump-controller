@@ -1,20 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as Peer from 'peerjs';
+import { PumpStatus, TankStatus } from '../variables/interfaces';
+import { STATUS, RECONNECT_TO_TANK, RECONNECT_TO_PUMP } from '../variables/string';
 import { PeerService } from './peer.service';
-import { PumpStatus } from './pump.service';
-import { TankStatus } from './tank.service';
-
-export const PUMP_OFF = 'PUMP_OFF'
-export const PUMP_ON = 'PUMP_ON'
-export const AUTO_PUMP_OFF = 'AUTO_PUMP_OFF'
-export const AUTO_PUMP_ON = 'AUTO_PUMP_ON'
-export const RECONNECT_TO_PUMP = 'RECONNEC_TO_PUMP'
-export const RECONNECT_TO_TANK = 'RECONNECT_TO_TANK'
-export const STATUS = 'STATUS'
-export const INC_LEVEL = 'INC_LEVEL'
-export const DEC_LEVEL = 'DEC_LEVEL'
-export const FULL = 'FULL'
-export const REMOTE_SERVER = 'REMOTE_SERVER'
 
 @Injectable({
   providedIn: 'root'

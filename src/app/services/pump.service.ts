@@ -1,25 +1,8 @@
 import { Injectable } from '@angular/core'
 import * as Peer from 'peerjs'
 import { PeerService } from './peer.service'
-import { AUTO_PUMP_OFF, AUTO_PUMP_ON, FULL, PUMP_OFF, PUMP_ON, RECONNECT_TO_PUMP, RECONNECT_TO_TANK, STATUS } from './remote.service'
-import { TankStatus } from './tank.service'
-
-export interface PumpStatus {
-  isOnline: boolean
-  isPumping: boolean
-  isConnectedToTank: boolean
-  isEnabledAutoPump: boolean
-  isConnectingToTank: boolean
-  tankConnectionText: string
-  tankConnectionTextColor: string
-  connectionText: string
-  connectionTextColor: string
-  pumpingText: string
-  pumpingTextColor: string
-  autoPumpingText: string
-  autoPumpingTextColor: string
-}
-
+import { AUTO_PUMP_OFF, AUTO_PUMP_ON, FULL, PUMP_OFF, PUMP_ON, RECONNECT_TO_TANK, STATUS } from 'src/app/variables/string'
+import { PumpStatus, TankStatus } from 'src/app/variables/interfaces'
 
 @Injectable({
   providedIn: 'root'
@@ -52,11 +35,11 @@ export class PumpService extends PeerService {
 
   public get tankStatus() { return this._tankStatus }
 
-  public get isOnline() { return this.isServerOpen && !this.peer.disconnected }
+  public get isOnline() { return this.isServerOpen && !this.peer?.disconnected }
   public get isPumping() { return this._isPumping }
   public get isConnectedToTank() { return this.isTankConnOpen }
   public get isEnabledAutoPump() { return this._autoPump }
-  public get isConnectingToServer() { return (!this.isServerOpen && !this.peer.disconnected) }
+  public get isConnectingToServer() { return (!this.isServerOpen && !this.peer?.disconnected) }
   public get isConnectingToTank() { return this._isConnectingToTank }
 
   // view tank status text

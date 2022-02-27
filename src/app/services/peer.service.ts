@@ -1,18 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Peer from 'peerjs';
-import { REMOTE_SERVER } from './remote.service';
-
-export const PeerMessage = {
-  SERVER_OPEN: 'Connected to peer server',
-  SERVER_CLOSE: 'Peer server connection closed',
-  SERVER_DISCONNECT: 'Peer server connection disconnected',
-
-  PEER_CONNECT: 'Peer connection connected',
-  PEER_OPEN: 'Peer connection opened',
-  PEER_ERROR: 'Peer connection error',
-  PEER_CLOSE: 'Peer connection closed',
-  PEER_DATA: 'Receive data'
-}
+import { PeerHost } from '../variables/interfaces';
+import { PeerMessage, PEER_HOST, REMOTE_SERVER } from '../variables/string';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +27,22 @@ export class PeerService {
       else if(id) this.myPeer = new Peer(id, { host: '/', port: 80, 'path': '/peerjs' })
     } catch (error) {
       if (id && isRemoteServer) this.myPeer = new window['Peer'](id)
-      else if(id) this.myPeer = new window['Peer'](id, { host: '/', port: 80, 'path': '/peerjs' })
+      else if(id) {
+        const _peerHost = localStorage.getItem(PEER_HOST)
+        let host, port
+        if(_peerHost) {
+          const peerHost = JSON.parse(_peerHost) as PeerHost
+          host = peerHost.ip
+          port = peerHost.port
+        }
+        if(!host) host = '/'
+        if(!port) port = location.port || 80
+        this.myPeer = new window['Peer'](id, { host, port, 'path': '/peerjs' })
+        setTimeout(() => {
+          if(!this.isServerOpen)
+            this.close()
+        }, 8000)
+      }
     }
 
     // server events

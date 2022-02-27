@@ -10,14 +10,26 @@
 <ion-content>
   <ion-list>
     <ion-item>
-      <ion-label position="floating">Server IP </ion-label>
-      <ion-input class="ion-no-padding" #ip0 type="number" slot="end" enterkeyhint="next" [(ngModel)]="ip[0]" (ionInput)="onInput()" placeholder="0"></ion-input>
-      <ion-label slot="end">.</ion-label>
-      <ion-input class="ion-no-padding" #ip1 type="number" slot="end" enterkeyhint="next" [(ngModel)]="ip[1]" (ionInput)="onInput()" placeholder="0"></ion-input>
-      <ion-label slot="end">.</ion-label>
-      <ion-input class="ion-no-padding" #ip2 type="number" slot="end" enterkeyhint="next" [(ngModel)]="ip[2]" (ionInput)="onInput()" placeholder="0"></ion-input>
-      <ion-label slot="end">.</ion-label>
-      <ion-input class="ion-no-padding" #ip3 type="number" slot="end" enterkeyhint="next" [(ngModel)]="ip[3]" (ionInput)="onInput()" placeholder="0"></ion-input>
+      <ion-label>Remote Server</ion-label>
+      <ion-toggle #remoteServerToggler slot="end" color="success" (ionChange)="toggleServer($event)"></ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="!remoteServer">
+      <ion-label class="ion-no-padding ion-no-margin">IP: </ion-label>
+      <ion-input class="ion-no-padding ion-no-margin ion-text-center" #ip0 type="number" slot="end" enterkeyhint="next" [(ngModel)]="ip[0]" (ionChange)="onPortChange()" placeholder="0"></ion-input>
+      <ion-label class="ion-no-padding ion-no-margin ion-text-center" slot="end">.</ion-label>
+      <ion-input class="ion-no-padding ion-no-margin ion-text-center" #ip1 type="number" slot="end" enterkeyhint="next" [(ngModel)]="ip[1]" (ionChange)="onPortChange()" placeholder="0"></ion-input>
+      <ion-label class="ion-no-padding ion-no-margin ion-text-center" slot="end">.</ion-label>
+      <ion-input class="ion-no-padding ion-no-margin ion-text-center" #ip2 type="number" slot="end" enterkeyhint="next" [(ngModel)]="ip[2]" (ionChange)="onPortChange()" placeholder="0"></ion-input>
+      <ion-label class="ion-no-padding ion-no-margin ion-text-center" slot="end">.</ion-label>
+      <ion-input class="ion-no-padding ion-no-margin ion-text-center" #ip3 type="number" slot="end" enterkeyhint="next" [(ngModel)]="ip[3]" (ionChange)="onPortChange()" placeholder="0"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="!remoteServer">
+      <ion-label>PORT: </ion-label>
+      <ion-input type="number" placeholder="80" [(ngModel)]="port" (ionChange)="onPortChange()"></ion-input>
     </ion-item>
   </ion-list>
+  <ion-button class="ion-margin" (click)="restoreDefault()" color="success" expand="full" shape="round">
+    Default
+  </ion-button>
+
 </ion-content>

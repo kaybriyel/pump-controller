@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import { NavController } from '@ionic/angular';
 import { PumpService } from 'src/app/services/pump.service';
-import { STATUS } from 'src/app/services/remote.service';
 
 @Component({
   selector: 'app-water-pump',

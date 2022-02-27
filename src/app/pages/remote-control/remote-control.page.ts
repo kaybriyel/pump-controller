@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
-import { AUTO_PUMP_OFF, AUTO_PUMP_ON, DEC_LEVEL, INC_LEVEL, PUMP_OFF, PUMP_ON, RemoteService } from 'src/app/services/remote.service';
+import { RemoteService } from 'src/app/services/remote.service';
+import { AUTO_PUMP_OFF, AUTO_PUMP_ON, DEC_LEVEL, PUMP_OFF, PUMP_ON } from 'src/app/variables/string';
 
 @Component({
   selector: 'app-remote-control',
